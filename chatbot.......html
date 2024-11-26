@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Mejorado</title>
+    <style>
+        /* Estilo general */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #chatbox {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+
+        .message {
+            margin: 10px 0;
+        }
+
+        .user {
+            text-align: right;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            max-width: 70%;
+        }
+
+        .bot {
+            text-align: left;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            max-width: 70%;
+        }
+
+        #userInput {
+            width: calc(100% - 70px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #sendBtn {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #sendBtn:hover {
+            background: #218838;
+        }
+
+        h3 {
+            color: #007BFF;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <h3>Bienvenido al Chatbot de Juliaca</h3>
+        <p>Pregúntame sobre lugares turísticos, restaurantes, hoteles o sitios concurridos.</p>
+        <div id="messages"></div>
+        <div>
+            <input type="text" id="userInput" placeholder="Escribe tu mensaje aquí...">
+            <button id="sendBtn">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        const messages = document.getElementById("messages");
+        const userInput = document.getElementById("userInput");
+        const sendBtn = document.getElementById("sendBtn");
+
+        // Función para añadir mensajes al chat
+        function addMessage(sender, text) {
+            const message = document.createElement("div");
+            message.classList.add("message");
+            if (sender === "user") {
+                message.classList.add("user");
+            } else {
+                message.classList.add("bot");
+            }
+            message.innerHTML = text; // Permitir HTML en las respuestas
+            messages.appendChild(message);
+            messages.scrollTop = messages.scrollHeight; // Scroll al final
+        }
+
+        // Función para obtener la respuesta del bot
+        function getResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+
+            if (lowerMessage.includes("lugares")) {
+                return `
+                <b>🌄 Lugares turísticos:</b><br>
+                <b>1. Plaza de Armas</b><br> Dirección: Jirón 2 de Mayo 422, Juliaca 21101<br>
+                <img src="https://example.com/plaza-de-armas.jpg" alt="Plaza de Armas"><br>
+                <b>2. Cerro Huaynarroque</b><br> Dirección: Ubicado en dirección sureste de la Plaza de Armas, salida al norte de Juliaca<br>
+                <img src="https://example.com/cerro-huaynarroque.jpg" alt="Cerro Huaynarroque"><br>
+                <b>3. Mercado Túpac Amaru</b><br> Dirección: Av. Tacna con Jr. Benigno Ballon, 714 450<br>
+                <img src="https://example.com/mercado-tupac-amaru.jpg" alt="Mercado Túpac Amaru"><br>
+                <b>4. Plaza Vea</b><br> Dirección: Av. Arequipa 2250, 714 450<br>
+                <img src="https://example.com/plaza-vea.jpg" alt="Plaza Vea"><br>
+                <b>5. Universidad UPEU</b><br> Dirección: Carretera salida a Arequipa KM.6 Chullunquiani, Av. Héroes de la Guerra del Pacífico, Juliaca<br>
+                <img src="https://example.com/universidad-upeu.jpg" alt="Universidad UPEU"><br>
+                ¡Te encantarán! 😊`;
+            } else if (lowerMessage.includes("restaurantes")) {
+                return `
+                <b>🍴 Restaurantes recomendados:</b><br>
+                <b>1. El Tablón</b><br> Dirección: Jr. Moquegua 123<br>
+                <img src="https://example.com/el-tablon.jpg" alt="El Tablón"><br>
+                <b>2. Pollería La Cabaña</b><br> Dirección: Av. Circunvalación 456<br>
+                <img src="https://example.com/la-cabana.jpg" alt="Pollería La Cabaña"><br>
+                <b>3. Cevichería El Pez Dorado</b><br> Dirección: Jr. Lima 789<br>
+                <img src="https://example.com/pez-dorado.jpg" alt="Cevichería El Pez Dorado"><br>
+                ¿Cuál te gustaría visitar?`;
+            } else if (lowerMessage.includes("gracias") || lowerMessage.includes("adiós")) {
+                return "¡De nada! Espero haberte ayudado. 😊";
+            } else {
+                return "Lo siento, no entiendo tu pregunta. Intenta preguntar sobre lugares, restaurantes o hoteles en Juliaca.";
+            }
+        }
+
+        // Evento al hacer clic en el botón de enviar
+        sendBtn.addEventListener("click", () => {
+            const userMessage = userInput.value.trim();
+            if (userMessage) {
+                addMessage("user", userMessage); // Mensaje del usuario
+                const botResponse = getResponse(userMessage); // Respuesta del bot
+                setTimeout(() => addMessage("bot", botResponse), 500); // Respuesta con retraso
+                userInput.value = ""; // Limpiar input
+            }
+        });
+
+        // Evento para enviar con la tecla Enter
+        userInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
